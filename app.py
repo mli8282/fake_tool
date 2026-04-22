@@ -1,7 +1,7 @@
 import streamlit as st
 import time
 
-st.set_page_config(page_title="Ultimate Smart Tool Optimized", layout="wide")
+st.set_page_config(page_title="Ultimate Smart Tool Fixed", layout="wide")
 
 # ===== 样式 =====
 st.markdown(""" 
@@ -43,7 +43,7 @@ left, right = st.columns([2,1])
 # ===== 首页大按钮 =====
 if st.session_state.page == "menu":
     with left:
-        st.title("💜 Ultimate Smart Tool Optimized")
+        st.title("💜 Ultimate Smart Tool Fixed")
         modules = [
             ("🛡 过检测", "check"),
             ("🎮 开启外挂", "hack"),
@@ -64,10 +64,11 @@ def run_progress(name, steps=101, slow=0.02):
     text = st.empty()
     for i in range(steps):
         time.sleep(slow)
-        progress.progress(i+1)
-        text.text(f"{name} {i}%")
+        value = min(i,100)  # 确保 <=100
+        progress.progress(value)
+        text.text(f"{name} {value}%")
         if i % 10 == 0:
-            add_log(f"{name} 进度 {i}%")
+            add_log(f"{name} 进度 {value}%")
     return True
 
 # ===== 功能页面 =====
@@ -86,15 +87,16 @@ def page_hack():
         progress = st.progress(0)
         text = st.empty()
         for i in range(101):
+            value = min(i,100)
             time.sleep(0.02)
-            progress.progress(i+1)
+            progress.progress(value)
             if i < 20: text.text(steps[0])
             elif i < 40: text.text(steps[1])
             elif i < 60: text.text(steps[2])
             elif i < 90: text.text(steps[3])
             else: text.text(steps[4])
             if i % 15 == 0:
-                add_log(f"{game} 模块进度 {i}%")
+                add_log(f"{game} 模块进度 {value}%")
         st.success(f"{game} 启动成功 ✅")
     st.button("返回", on_click=back)
 
