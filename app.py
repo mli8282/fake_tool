@@ -1,7 +1,7 @@
 import streamlit as st
 import time
 
-st.set_page_config(page_title="Ultimate Smart Tool Right Output", layout="wide")
+st.set_page_config(page_title="Ultimate Smart Tool Right Panel", layout="wide")
 
 # ===== 样式 =====
 st.markdown("""
@@ -22,11 +22,10 @@ body {background-color: #0b1a38; color: white;}
     transition: 0.2s;
 }
 button.stButton>button {width: 100%; height: 100%;}
-.progress-text {color:white; font-size:16px;}
 </style>
 """, unsafe_allow_html=True)
 
-# ===== 页面状态 =====
+# ===== 状态 =====
 if "page" not in st.session_state:
     st.session_state.page = "menu"
 if "logs" not in st.session_state:
@@ -44,10 +43,10 @@ def add_log(text):
 # ===== 布局 =====
 left, right = st.columns([2,3])
 
-# ===== 首页大按钮 =====
+# ===== 左侧按钮 =====
 if st.session_state.page == "menu":
     with left:
-        st.title("💜 Ultimate Smart Tool Right Output")
+        st.title("💜 Ultimate Smart Tool Right Panel")
         modules = [
             ("🛡 过检测", "check"),
             ("🎮 开启外挂", "hack"),
@@ -60,15 +59,16 @@ if st.session_state.page == "menu":
                 go(page_id)
 
 # ===== 功能函数 =====
-def run_progress(name, steps=101, slow=0.02):
+def run_progress(name, slow=0.02):
     with right:
         progress_placeholder = st.empty()
-        for i in range(steps):
+        for i in range(101):
             value = min(i,100)
             progress_placeholder.progress(value)
             add_log(f"{name} {value}%")
             time.sleep(slow)
 
+# ===== 各模块 =====
 def page_check():
     with left:
         st.subheader("环境检测")
@@ -80,14 +80,14 @@ def page_check():
 def page_hack():
     with left:
         st.subheader("外挂模块（模拟）")
-        game = st.selectbox("选择游戏", ["无畏契约", "第五人格", "我的世界"])
+        game = st.selectbox("选择游戏", ["无畏契约","第五人格","我的世界"])
         if st.button("启动"):
-            steps = ["加载模块","初始化环境","连接游戏进程","注入配置","完成"]
+            steps = ["加载模块","初始化环境","连接进程","注入配置","完成"]
             with right:
                 progress_placeholder = st.empty()
             for i in range(101):
                 value = min(i,100)
-                step = steps[min(i//20, 4)]
+                step = steps[min(i//20,4)]
                 add_log(f"{game} - {step} {value}%")
                 with right:
                     progress_placeholder.progress(value)
