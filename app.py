@@ -82,22 +82,35 @@ def page_check():
 def page_hack():
     st.subheader("外挂模块（模拟）")
     game = st.selectbox("选择游戏", ["无畏契约", "第五人格", "我的世界"])
+    
     if st.button("启动"):
         steps = ["加载模块","初始化环境","连接游戏进程","注入配置","完成"]
         progress = st.progress(0)
         text = st.empty()
+
         for i in range(101):
             value = min(i,100)
             time.sleep(0.02)
             progress.progress(value)
-            if i<20: text.text(steps[0])
-            elif i<40: text.text(steps[1])
-            elif i<60: text.text(steps[2])
-            elif i<90: text.text(steps[3])
-            else: text.text(steps[4])
+
+            if i < 20:
+                text.text(steps[0])
+            elif i < 40:
+                text.text(steps[1])
+            elif i < 60:
+                text.text(steps[2])
+            elif i < 90:
+                text.text(steps[3])
+            else:
+                text.text(steps[4])
+
             if i % 15 == 0:
                 add_log(f"{game} 模块进度 {value}%")
+
+        # ✅ 完成后输出卡密
         st.success(f"{game} 启动成功 ✅")
+        st.info("卡密：W8D1F2C572D4711F3AB78850E131020B")
+
     st.button("返回", on_click=back)
 
 def page_downgrade():
