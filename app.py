@@ -1,7 +1,7 @@
 import streamlit as st
 import time
 
-st.set_page_config(page_title="Ultimate Smart Tool Right Only", layout="wide")
+st.set_page_config(page_title="Ultimate Smart Tool Final", layout="wide")
 
 # ===== 样式 =====
 st.markdown("""
@@ -46,7 +46,7 @@ left, right = st.columns([2,3])
 # ===== 左侧按钮 =====
 if st.session_state.page == "menu":
     with left:
-        st.title("💜 Ultimate Smart Tool Right Only")
+        st.title("💜 Ultimate Smart Tool Final")
         modules = [
             ("🛡 过检测", "check"),
             ("🎮 开启外挂", "hack"),
