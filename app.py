@@ -173,4 +173,4 @@ with right:
     if st.session_state.logs:
         log_box.text("\n".join(st.session_state.logs[-50:]))
     else:
-        log_box.text("暂无日志"
+        log_box.text("暂无日志")
