@@ -1,7 +1,7 @@
 import streamlit as st
 import time
 
-st.set_page_config(page_title="Ultimate Smart Tool All Output Right", layout="wide")
+st.set_page_config(page_title="Ultimate Smart Tool Right Output Only", layout="wide")
 
 # ===== 样式 =====
 st.markdown("""
@@ -28,17 +28,9 @@ button.stButton>button {width: 100%; height: 100%;}
 # ===== 页面状态 =====
 if "page" not in st.session_state:
     st.session_state.page = "menu"
-if "logs" not in st.session_state:
-    st.session_state.logs = []
 
 def go(page):
     st.session_state.page = page
-
-def back():
-    st.session_state.page = "menu"
-
-def add_log(msg):
-    st.session_state.logs.append(f"[{time.strftime('%H:%M:%S')}] {msg}")
 
 # ===== 布局 =====
 left, right = st.columns([2,3])
@@ -46,7 +38,7 @@ left, right = st.columns([2,3])
 # ===== 左侧按钮 =====
 if st.session_state.page == "menu":
     with left:
-        st.title("💜 Ultimate Smart Tool Right Panel")
+        st.title("💜 Ultimate Smart Tool")
         modules = [
             ("🛡 过检测", "check"),
             ("🎮 开启外挂", "hack"),
@@ -64,21 +56,20 @@ def run_progress(name, slow=0.02):
     for i in range(101):
         value = min(i,100)
         progress_placeholder.progress(value)
-        add_log(f"{name} {value}%")
+        right.text(f"{name} {value}%")
         time.sleep(slow)
 
 # ===== 模块页面 =====
 def page_check():
     if st.session_state.page != "check":
         return
-    # 左侧保持原状
     with right:
         st.subheader("环境检测")
         if st.button("开始检测"):
             run_progress("检测模块")
-            add_log("环境安全 ✅")
+            st.text("环境安全 ✅")
         if st.button("返回"):
-            back()
+            st.session_state.page = "menu"
 
 def page_hack():
     if st.session_state.page != "hack":
@@ -92,12 +83,12 @@ def page_hack():
             for i in range(101):
                 value = min(i,100)
                 step_name = steps[min(i//20,4)]
-                add_log(f"{game} - {step_name} {value}%")
                 progress_placeholder.progress(value)
+                st.text(f"{game} - {step_name} {value}%")
                 time.sleep(0.02)
-            add_log(f"{game} 启动成功 ✅")
+            st.text(f"{game} 启动成功 ✅")
         if st.button("返回"):
-            back()
+            st.session_state.page = "menu"
 
 def page_downgrade():
     if st.session_state.page != "downgrade":
@@ -107,9 +98,9 @@ def page_downgrade():
         version = st.selectbox("版本", [f"iOS {i}" for i in range(10,18)])
         if st.button("开始"):
             run_progress(f"写入 {version} 系统组件")
-            add_log("更改成功 ✅")
+            st.text("更改成功 ✅")
         if st.button("返回"):
-            back()
+            st.session_state.page = "menu"
 
 def page_flash():
     if st.session_state.page != "flash":
@@ -119,9 +110,9 @@ def page_flash():
         option = st.selectbox("刷入方案", ["标准刷入","高级刷入","兼容模式"])
         if st.button("开始刷入"):
             run_progress(f"刷入方案 {option}")
-            add_log("刷入完成 ✅")
+            st.text("刷入完成 ✅")
         if st.button("返回"):
-            back()
+            st.session_state.page = "menu"
 
 def page_apps():
     if st.session_state.page != "apps":
@@ -131,9 +122,9 @@ def page_apps():
         apps = st.multiselect("选择应用", ["微信","QQ","抖音","Minecraft","王者荣耀","原神"])
         if st.button("执行"):
             for a in apps:
-                add_log(f"处理应用 {a} ✅")
+                st.text(f"处理应用 {a} ✅")
         if st.button("返回"):
-            back()
+            st.session_state.page = "menu"
 
 # ===== 页面映射 =====
 page_map = {
@@ -146,12 +137,3 @@ page_map = {
 
 for func in page_map.values():
     func()
-
-# ===== 右侧日志输出 =====
-with right:
-    st.subheader("📟 输出结果")
-    output_box = st.empty()
-    if st.session_state.logs:
-        output_box.text("\n".join(st.session_state.logs[-100:]))
-    else:
-        output_box.text("暂无输出")
