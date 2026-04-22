@@ -25,8 +25,6 @@ if "notice_shown" not in st.session_state:
             </div>
             """, unsafe_allow_html=True
         )
-        if st.button("关闭公告"):
-            notice_container.empty()  # 点击关闭按钮后移除弹窗
 
 # ===== 样式 =====
 st.markdown("""
