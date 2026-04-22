@@ -80,7 +80,7 @@ def page_check():
     st.button("返回", on_click=back)
 
 def page_hack():
-    st.subheader("外挂模块（模拟）")
+    st.subheader("外挂模块")
     game = st.selectbox("选择游戏", ["无畏契约", "第五人格", "我的世界"])
     
     if st.button("启动"):
