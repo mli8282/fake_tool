@@ -44,7 +44,7 @@ left, right = st.columns([2,1])
 # ===== 首页大卡片按钮 =====
 if st.session_state.page == "menu":
     with left:
-        st.title("💜 Ultimate Smart Tool Big Buttons")
+        st.title("Zero零度")
         modules = [
             ("🛡 过检测", "check"),
             ("🎮 开启外挂", "hack"),
