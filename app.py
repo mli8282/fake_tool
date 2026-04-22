@@ -14,7 +14,7 @@ body {background-color: #0b1a38; color: white;}
     text-align: center;
     color: white;
     font-size: 28px;
-    margin: 15px 0;
+    margin: 20px 0;
     width: 100%;
 }
 .card-button:hover {
@@ -22,6 +22,7 @@ body {background-color: #0b1a38; color: white;}
     transition: 0.2s;
 }
 button.stButton>button {width: 100%; height: 100%;}
+.progress-text {color:white; font-size:16px;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -58,16 +59,14 @@ if st.session_state.page == "menu":
             if st.button(name, key=page_id):
                 go(page_id)
 
-# ===== 功能模块映射 =====
-def run_progress(name, slow=0.02):
+# ===== 功能函数 =====
+def run_progress(name, steps=101, slow=0.02):
     with right:
         progress_placeholder = st.empty()
-        for i in range(101):
-            value = min(i, 100)
+        for i in range(steps):
+            value = min(i,100)
             progress_placeholder.progress(value)
-            log_text = f"{name} {value}%"
-            add_log(log_text)
-            st.empty()  # 占位刷新
+            add_log(f"{name} {value}%")
             time.sleep(slow)
 
 def page_check():
@@ -84,10 +83,14 @@ def page_hack():
         game = st.selectbox("选择游戏", ["无畏契约", "第五人格", "我的世界"])
         if st.button("启动"):
             steps = ["加载模块","初始化环境","连接游戏进程","注入配置","完成"]
+            with right:
+                progress_placeholder = st.empty()
             for i in range(101):
                 value = min(i,100)
                 step = steps[min(i//20, 4)]
                 add_log(f"{game} - {step} {value}%")
+                with right:
+                    progress_placeholder.progress(value)
                 time.sleep(0.02)
             add_log(f"{game} 启动成功 ✅")
         st.button("返回", on_click=back)
@@ -119,6 +122,7 @@ def page_apps():
                 add_log(f"处理应用 {a} ✅")
         st.button("返回", on_click=back)
 
+# ===== 页面映射 =====
 page_map = {
     "check": page_check,
     "hack": page_hack,
