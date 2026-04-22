@@ -1,99 +1,107 @@
 import streamlit as st
 import time
-import random
 
 st.set_page_config(page_title="Smart Tool", layout="wide")
 
-# ===== 样式（紫色UI）=====
+# ===== 样式：卡片按钮 =====
 st.markdown("""
 <style>
-body {background-color: #f5f0ff;}
-button {
-    background-color: #b57edc !important;
-    color: white !important;
+.card {
+    background: linear-gradient(135deg, #c084fc, #a855f7);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    margin: 10px;
+}
+.card:hover {
+    transform: scale(1.05);
+    transition: 0.2s;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ===== 左侧菜单 =====
-menu = st.sidebar.radio("导航", [
-    "过检测", "开启外挂", "降低版本", "应用管理", "基本刷入"
-])
+# ===== 页面状态 =====
+if "page" not in st.session_state:
+    st.session_state.page = "menu"
 
-st.title("💜 Smart Tool")
+def go(page):
+    st.session_state.page = page
 
-# ===== 日志函数 =====
-def fake_log(text):
-    st.text(f"[{time.strftime('%H:%M:%S')}] {text}")
+def back():
+    st.session_state.page = "menu"
+
+# ===== 首页（卡片按钮）=====
+if st.session_state.page == "menu":
+    st.title("💜 Smart Tool")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        if st.button("🛡 过检测"):
+            go("check")
+        if st.button("⚙️ 基本刷入"):
+            go("flash")
+
+    with col2:
+        if st.button("🎮 开启外挂"):
+            go("hack")
+        if st.button("📱 应用管理"):
+            go("apps")
+
+    with col3:
+        if st.button("📉 降低版本"):
+            go("downgrade")
 
 # ===== 过检测 =====
-if menu == "过检测":
+elif st.session_state.page == "check":
     st.subheader("环境检测")
-
     if st.button("开始检测"):
         progress = st.progress(0)
-        log_area = st.empty()
-
         for i in range(100):
             time.sleep(0.01)
             progress.progress(i+1)
-            log_area.text(f"检测模块 {i}%...")
-
         st.success("环境安全 ✅")
+    st.button("返回", on_click=back)
 
-# ===== 开启外挂（UI模拟）=====
-elif menu == "开启外挂":
+# ===== 外挂（模拟）=====
+elif st.session_state.page == "hack":
     st.subheader("外挂模块（模拟）")
-
     game = st.selectbox("选择游戏", ["无畏契约", "第五人格", "我的世界"])
-    toggle = st.checkbox("开启")
+    if st.checkbox("开启"):
+        st.success(f"{game} 开启成功 ✅")
+    st.button("返回", on_click=back)
 
-    if toggle:
-        st.success(f"{game} 模块加载成功 ✅")
-    else:
-        st.info("未开启")
-
-# ===== 降低版本 =====
-elif menu == "降低版本":
-    st.subheader("系统版本调整")
-
-    version = st.selectbox("iOS版本", [f"iOS {i}" for i in range(10, 18)])
-
-    if st.button("开始操作"):
+# ===== 降版本 =====
+elif st.session_state.page == "downgrade":
+    st.subheader("系统调整")
+    version = st.selectbox("版本", [f"iOS {i}" for i in range(10,18)])
+    if st.button("开始"):
         progress = st.progress(0)
-        log = st.empty()
-
         for i in range(100):
             time.sleep(0.01)
             progress.progress(i+1)
-            log.text(f"正在写入系统组件... {i}%")
-
-        st.success(f"{version} 更改成功 ✅")
+        st.success("更改成功 ✅")
+    st.button("返回", on_click=back)
 
 # ===== 应用管理 =====
-elif menu == "应用管理":
+elif st.session_state.page == "apps":
     st.subheader("应用管理")
-
-    apps = ["微信", "QQ", "抖音", "我的世界"]
-    selected = st.multiselect("选择应用", apps)
-
-    if st.button("批量操作"):
-        for app in selected:
-            st.write(f"✔ 已处理 {app}")
+    apps = st.multiselect("选择应用", ["微信", "QQ", "抖音"])
+    if st.button("执行"):
+        for a in apps:
+            st.write(f"✔ 已处理 {a}")
+    st.button("返回", on_click=back)
 
 # ===== 基本刷入 =====
-elif menu == "基本刷入":
-    st.subheader("基础刷入模块")
-
-    option = st.selectbox("选择方案", ["标准刷入", "高级刷入", "兼容模式"])
-
+elif st.session_state.page == "flash":
+    st.subheader("基本刷入")
     if st.button("开始刷入"):
         progress = st.progress(0)
-        log = st.empty()
-
         for i in range(100):
             time.sleep(0.01)
             progress.progress(i+1)
-            log.text(f"写入模块 {i}%...")
-
         st.success("刷入完成 ✅")
+    st.button("返回", on_click=back)
