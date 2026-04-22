@@ -1,7 +1,7 @@
 import streamlit as st
 import time
 
-st.set_page_config(page_title="Ultimate Smart Tool Right Panel", layout="wide")
+st.set_page_config(page_title="Ultimate Smart Tool Right Only", layout="wide")
 
 # ===== 样式 =====
 st.markdown("""
@@ -9,7 +9,7 @@ st.markdown("""
 body {background-color: #0b1a38; color: white;}
 .card-button {
     background: linear-gradient(135deg, #1f3c88, #1a73e8);
-    padding: 50px;
+    padding: 60px;
     border-radius: 20px;
     text-align: center;
     color: white;
@@ -31,14 +31,14 @@ if "page" not in st.session_state:
 if "logs" not in st.session_state:
     st.session_state.logs = []
 
-def go(p):
-    st.session_state.page = p
+def go(page):
+    st.session_state.page = page
 
 def back():
     st.session_state.page = "menu"
 
-def add_log(text):
-    st.session_state.logs.append(f"[{time.strftime('%H:%M:%S')}] {text}")
+def add_log(msg):
+    st.session_state.logs.append(f"[{time.strftime('%H:%M:%S')}] {msg}")
 
 # ===== 布局 =====
 left, right = st.columns([2,3])
@@ -46,7 +46,7 @@ left, right = st.columns([2,3])
 # ===== 左侧按钮 =====
 if st.session_state.page == "menu":
     with left:
-        st.title("💜 Ultimate Smart Tool Right Panel")
+        st.title("💜 Ultimate Smart Tool Right Only")
         modules = [
             ("🛡 过检测", "check"),
             ("🎮 开启外挂", "hack"),
@@ -68,7 +68,7 @@ def run_progress(name, slow=0.02):
             add_log(f"{name} {value}%")
             time.sleep(slow)
 
-# ===== 各模块 =====
+# ===== 模块页面 =====
 def page_check():
     with left:
         st.subheader("环境检测")
@@ -87,8 +87,8 @@ def page_hack():
                 progress_placeholder = st.empty()
             for i in range(101):
                 value = min(i,100)
-                step = steps[min(i//20,4)]
-                add_log(f"{game} - {step} {value}%")
+                step_name = steps[min(i//20,4)]
+                add_log(f"{game} - {step_name} {value}%")
                 with right:
                     progress_placeholder.progress(value)
                 time.sleep(0.02)
