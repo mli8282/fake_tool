@@ -1,7 +1,7 @@
 import streamlit as st
 import time
 
-st.set_page_config(page_title="Ultimate Smart Tool Right Output Only", layout="wide")
+st.set_page_config(page_title="Ultimate Smart Tool Full Right Output", layout="wide")
 
 # ===== 样式 =====
 st.markdown("""
@@ -36,19 +36,18 @@ def go(page):
 left, right = st.columns([2,3])
 
 # ===== 左侧按钮 =====
-if st.session_state.page == "menu":
-    with left:
-        st.title("💜 Ultimate Smart Tool")
-        modules = [
-            ("🛡 过检测", "check"),
-            ("🎮 开启外挂", "hack"),
-            ("📉 降低版本", "downgrade"),
-            ("⚙️ 基本刷入", "flash"),
-            ("📱 应用管理", "apps")
-        ]
-        for name, page_id in modules:
-            if st.button(name, key=page_id):
-                go(page_id)
+with left:
+    st.title("💜 Ultimate Smart Tool")
+    modules = [
+        ("🛡 过检测", "check"),
+        ("🎮 开启外挂", "hack"),
+        ("📉 降低版本", "downgrade"),
+        ("⚙️ 基本刷入", "flash"),
+        ("📱 应用管理", "apps")
+    ]
+    for name, page_id in modules:
+        if st.button(name, key=page_id):
+            go(page_id)
 
 # ===== 功能函数 =====
 def run_progress(name, slow=0.02):
@@ -79,7 +78,7 @@ def page_hack():
         game = st.selectbox("选择游戏", ["无畏契约","第五人格","我的世界"])
         if st.button("启动"):
             steps = ["加载模块","初始化环境","连接进程","注入配置","完成"]
-            progress_placeholder = st.empty()
+            progress_placeholder = right.empty()
             for i in range(101):
                 value = min(i,100)
                 step_name = steps[min(i//20,4)]
@@ -135,5 +134,6 @@ page_map = {
     "apps": page_apps
 }
 
+# 执行页面
 for func in page_map.values():
     func()
