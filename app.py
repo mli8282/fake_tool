@@ -1,7 +1,7 @@
 import streamlit as st
 import time
 
-st.set_page_config(page_title="Ultimate Smart Tool Dark", layout="wide")
+st.set_page_config(page_title="Ultimate Smart Tool Dark Right Output", layout="wide")
 
 # ===== 样式 =====
 st.markdown("""
@@ -22,7 +22,6 @@ body {background-color: #0b1a38; color: white;}
     transition: 0.2s;
 }
 button.stButton>button {width: 100%; height: 100%;}
-.progress-text {color:white; font-size:16px;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -31,8 +30,6 @@ if "page" not in st.session_state:
     st.session_state.page = "menu"
 if "logs" not in st.session_state:
     st.session_state.logs = []
-if "output" not in st.session_state:
-    st.session_state.output = []
 
 def go(p):
     st.session_state.page = p
@@ -40,12 +37,11 @@ def back():
     st.session_state.page = "menu"
 def add_log(text):
     st.session_state.logs.append(f"[{time.strftime('%H:%M:%S')}] {text}")
-    st.session_state.output.append(text)
 
 # ===== 布局 =====
 left, right = st.columns([2,3])
 
-# ===== 首页大卡片按钮 =====
+# ===== 首页大按钮 =====
 if st.session_state.page == "menu":
     with left:
         st.title("💜 Ultimate Smart Tool Dark")
@@ -63,13 +59,14 @@ if st.session_state.page == "menu":
             if st.button(name, key=page_id):
                 go(page_id)
 
-# ===== 模块功能 =====
+# ===== 功能函数 =====
 def run_progress(name, steps=101, slow=0.02):
     for i in range(steps):
         value = min(i,100)
         add_log(f"{name} 进度 {value}%")
         time.sleep(slow)
 
+# ===== 页面功能 =====
 def page_check():
     st.subheader("环境检测")
     if st.button("开始检测"):
@@ -161,7 +158,7 @@ if st.session_state.page in page_map:
 with right:
     st.subheader("📟 输出结果")
     output_box = st.empty()
-    if st.session_state.output:
-        output_box.text("\n".join(st.session_state.output[-100:]))
+    if st.session_state.logs:
+        output_box.text("\n".join(st.session_state.logs[-100:]))
     else:
         output_box.text("暂无输出")
