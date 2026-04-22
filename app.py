@@ -2,6 +2,31 @@ import streamlit as st
 import time
 
 st.set_page_config(page_title="Ultimate Smart Tool Big Buttons", layout="wide")
+# =====公告=====
+if "notice_shown" not in st.session_state:
+    st.session_state.notice_shown = True
+    
+    # 使用 container 模拟弹窗
+    notice_container = st.container()
+    with notice_container:
+        st.markdown(
+            """
+            <div style="
+                background-color:#1a73e8; 
+                padding:20px; 
+                border-radius:15px; 
+                text-align:center;
+                color:white;
+                font-size:20px;
+                ">
+                📢 <b>公告</b><br><br>
+                月卡188  周卡88  天卡8.8<br>
+                v:Eggy10276<br><br>
+            </div>
+            """, unsafe_allow_html=True
+        )
+        if st.button("关闭公告"):
+            notice_container.empty()  # 点击关闭按钮后移除弹窗
 
 # ===== 样式 =====
 st.markdown("""
